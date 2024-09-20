@@ -5,7 +5,7 @@
 
 * Expose the brokers
     ```yaml
-        listeners:
+    listeners:
       - name: external
         port: 9094
         type: ingress
@@ -20,6 +20,7 @@
               advertisedHost: my-kafka-cluster-broker-1.example.com
             - broker: 2
               advertisedHost: my-kafka-cluster-broker-2.example.com
+          ingressClassName: "nginx"  # Kafka cluster will use the nginx ingress class for ingress traffic
     ```
 
 * Virtual service
@@ -40,9 +41,9 @@
             prefix: /kafka
         route:
         - destination:
-            host: nginx-ingress.default.svc.cluster.local
+            host: nginx-ingress.default.svc.cluster.local # Routing traffic to nginx pods
             port:
-            number: 80
+            number: 9094 # I have used this port because I want nginx to respond to the same port as kafka
     ```
 
  * Ingress
